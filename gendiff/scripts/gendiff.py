@@ -4,12 +4,13 @@ import json
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Compares two configuration files and shows a difference.')
+    description = 'Compares two configuration files and shows a difference.'
+    parser = argparse.ArgumentParser(description=description)
     parser.add_argument('file1', metavar='first_file')
     parser.add_argument('file2', metavar='second_file')
     parser.add_argument('-f', '--format', help='set format of output')
 
-    args = parser.parse_args()
+#    args = parser.parse_args()
 
 
 def generate_diff(file1, file2):
@@ -30,7 +31,8 @@ def generate_diff(file1, file2):
         elif elem in file_intersection and input1[elem] == input2[elem]:
             result += f"    {elem}: {input1[elem]}\n"
         else:
-            result += f"  - {elem}: {input1[elem]}\n  + {elem}: {input2[elem]}\n"
+            result += (f"  - {elem}: {input1[elem]}\n"
+                       f"  + {elem}: {input2[elem]}\n")
     return '{\n' + result + '}\n'
 
 
