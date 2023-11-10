@@ -1,15 +1,10 @@
-from gendiff.logics.file_reading import files_reading
+from gendiff import files_reading
 
 
 def generate_diff(file1, file2):
     result = ''
-    result_parsing = files_reading(file1, file2)
-    if isinstance(result_parsing, tuple):
-        input1, input2 = result_parsing
-    else:
-        return result_parsing
-    set_keys1 = set(input1)
-    set_keys2 = set(input2)
+    input1, input2 = files_reading(file1), files_reading(file2)
+    set_keys1, set_keys2 = set(input1), set(input2)
     only_in_file1 = set_keys1.difference(set_keys2)
     only_in_file2 = set_keys2.difference(set_keys1)
     file_intersection = set_keys1.intersection(set_keys2)

@@ -9,7 +9,7 @@ def main():
     parser.add_argument('file2', metavar='second_file')
     parser.add_argument('-f', '--format', help='set format of output')
 
-#    args = parser.parse_args()
+    parser.parse_args()
 
 
 if __name__ == '__main__':
