@@ -1,22 +1,92 @@
+import itertools
+import math
+
+from functools import reduce
 from gendiff import files_reading
 
 
+# flake8: noqa: C901
+def stylish(value, file1, file2, replacer=' ', spaces_count=4):
+    data1 = files_reading(file1)
+    data2 = files_reading(file2)
+
+    def iter_(current_value, depth, keys):
+        if not isinstance(current_value, dict):
+            return f"{current_value}"
+
+        deep_indent_size = depth + spaces_count
+        deep_indent = replacer * deep_indent_size
+        current_indent = replacer * depth
+        lines = []
+
+        for key, val in current_value.items():
+            keys.append(key)
+            if val == 'added':
+                val1 = deep_get_value(data2, keys)
+                lines.append(f'{deep_indent[2:]}+ {key}: '
+                             f'{iter_(val1, deep_indent_size, keys)}'.rstrip())
+            elif val == 'deleted':
+                val2 = deep_get_value(data1, keys)
+                lines.append(f'{deep_indent[2:]}- {key}: '
+                             f'{iter_(val2, deep_indent_size, keys)}'.rstrip())
+            elif val == 'changed':
+                val1 = deep_get_value(data1, keys)
+                lines.append(f'{deep_indent[2:]}- {key}: '
+                             f'{iter_(val1, deep_indent_size, keys)}'.rstrip())
+                val2 = deep_get_value(data2, keys)
+                lines.append(f'{deep_indent[2:]}+ {key}: '
+                             f'{iter_(val2, deep_indent_size, keys)}'.rstrip())
+            elif val == 'unchanged':
+                val1 = deep_get_value(data1, keys)
+                lines.append(f'{deep_indent[2:]}  {key}: '
+                             f'{iter_(val1, deep_indent_size, keys)}'.rstrip())
+            else:
+                lines.append(f'{deep_indent[2:]}  {key}: '
+                             f'{iter_(val, deep_indent_size, keys)}'.rstrip())
+            keys.pop()
+        result = itertools.chain("{", lines, [current_indent + "}"])
+        return type_conversion('\n'.join(result))
+
+    return iter_(value, 0, [])
+
+
+def deep_get_value(dictionary, path):
+    return reduce(dict.get, path, dictionary)
+
+
+# flake8: noqa: C901
+def different(data1, data2, status=''):
+    result = {}
+    if not isinstance(data1, dict) or not isinstance(data2, dict):
+        return status
+    for key, value in data1.items():
+        if isinstance(value, dict) and data2.get(key, math.inf) != math.inf:
+            different(data1[key], data2[key])
+        keys = sorted(list(data1.keys() | data2.keys()))
+        for k in keys:
+            if k not in data1:
+                result[k] = different(data1.get(k, -math.inf),
+                                      data2.get(k, math.inf), 'added')
+            elif k not in data2:
+                result[k] = different(data1.get(k, -math.inf),
+                                      data2.get(k, math.inf), 'deleted')
+            elif data1[k] == data2[k]:
+                result[k] = different(data1.get(k, -math.inf),
+                                      data2.get(k, math.inf), 'unchanged')
+            else:
+                result[k] = different(data1.get(k, -math.inf),
+                                      data2.get(k, math.inf), 'changed')
+    return result
+
+
+def type_conversion(data):
+    edit_data_false = data.replace('False', 'false')
+    edit_data_true = edit_data_false.replace('True', 'true')
+    edit_data = edit_data_true.replace('None', 'null')
+    return edit_data
+
+
 def generate_diff(file1, file2):
-    result = ''
-    input1, input2 = files_reading(file1), files_reading(file2)
-    set_keys1, set_keys2 = set(input1), set(input2)
-    only_in_file1 = set_keys1.difference(set_keys2)
-    only_in_file2 = set_keys2.difference(set_keys1)
-    file_intersection = set_keys1.intersection(set_keys2)
-    all_keys = sorted(list(set_keys1.union(set_keys2)))
-    for elem in all_keys:
-        if elem in only_in_file1:
-            result += f"  - {elem}: {input1[elem]}\n"
-        elif elem in only_in_file2:
-            result += f"  + {elem}: {input2[elem]}\n"
-        elif elem in file_intersection and input1[elem] == input2[elem]:
-            result += f"    {elem}: {input1[elem]}\n"
-        else:
-            result += (f"  - {elem}: {input1[elem]}\n"
-                       f"  + {elem}: {input2[elem]}\n")
-    return '{\n' + result + '}\n'
+    data1 = files_reading(file1)
+    data2 = files_reading(file2)
+    return different(data1, data2)
