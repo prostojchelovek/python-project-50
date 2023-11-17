@@ -4,8 +4,10 @@ from functools import reduce
 
 
 # flake8: noqa: C901
-def stylish(value, data1, data2, replacer=' ', spaces_count=4):
-
+def stylish(value, data1, data2):
+    replacer = ' '
+    spaces_count = 4
+    
     def iter_(current_value, depth, keys):
         if not isinstance(current_value, dict):
             return f"{current_value}"
