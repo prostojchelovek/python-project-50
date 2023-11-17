@@ -10,23 +10,21 @@ def different(data1, data2, status=''):
     result = {}
     if not isinstance(data1, dict) or not isinstance(data2, dict):
         return status
-    for key, value in data1.items():
-        if isinstance(value, dict) and data2.get(key, math.inf) != math.inf:
-            different(data1[key], data2[key])
-        keys = sorted(list(data1.keys() | data2.keys()))
-        for k in keys:
-            if k not in data1:
-                result[k] = different(data1.get(k, -math.inf),
-                                      data2.get(k, math.inf), 'added')
-            elif k not in data2:
-                result[k] = different(data1.get(k, -math.inf),
-                                      data2.get(k, math.inf), 'deleted')
-            elif data1[k] == data2[k]:
-                result[k] = different(data1.get(k, -math.inf),
-                                      data2.get(k, math.inf), 'unchanged')
-            else:
-                result[k] = different(data1.get(k, -math.inf),
-                                      data2.get(k, math.inf), 'changed')
+
+    keys = sorted(list(data1.keys() | data2.keys()))
+    for k in keys:
+        if k not in data1:
+            result[k] = different(data1.get(k, -math.inf),
+                                  data2.get(k, math.inf), 'added')
+        elif k not in data2:
+            result[k] = different(data1.get(k, -math.inf),
+                                  data2.get(k, math.inf), 'deleted')
+        elif data1[k] == data2[k]:
+            result[k] = different(data1.get(k, -math.inf),
+                                  data2.get(k, math.inf), 'unchanged')
+        else:
+            result[k] = different(data1.get(k, -math.inf),
+                                  data2.get(k, math.inf), 'changed')
     return result
 
 
