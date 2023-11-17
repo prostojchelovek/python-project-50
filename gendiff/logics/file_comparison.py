@@ -1,4 +1,5 @@
 import math
+import json
 
 from gendiff import files_reading
 from gendiff.logics.format.plain import plain
@@ -37,3 +38,5 @@ def generate_diff(file1, file2, format='stylish'):
         return stylish(different(data1, data2), data1, data2)
     elif format == 'plain':
         return plain(different(data1, data2), data1, data2)
+    elif format == 'json':
+        return json.dumps(different(data1, data2))

@@ -24,6 +24,8 @@ def main():
         print(generate_diff(data1, data2, 'plain'))
     elif args.format == 'stylish':
         print(generate_diff(data1, data2))
+    elif args.format == 'json':
+        print(generate_diff(data1, data2, 'json'))
 
 
 if __name__ == '__main__':
