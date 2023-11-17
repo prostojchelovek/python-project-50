@@ -22,27 +22,26 @@ def stylish(value, data1, data2):
             if val == 'added':
                 val1 = deep_get_value(data2, keys)
                 lines.append(f'{deep_indent[2:]}+ {key}: '
-                             f'{iter_(val1, deep_indent_size, keys)}')
+                             f'{iter_(val1, deep_indent_size, keys)}'.rstrip())
             elif val == 'deleted':
                 val2 = deep_get_value(data1, keys)
                 lines.append(f'{deep_indent[2:]}- {key}: '
-                             f'{iter_(val2, deep_indent_size, keys)}')
+                             f'{iter_(val2, deep_indent_size, keys)}'.rstrip())
             elif val == 'changed':
                 val1 = deep_get_value(data1, keys)
                 lines.append(f'{deep_indent[2:]}- {key}: '
-                             f'{iter_(val1, deep_indent_size, keys)}')
+                             f'{iter_(val1, deep_indent_size, keys)}'.rstrip())
                 val2 = deep_get_value(data2, keys)
                 lines.append(f'{deep_indent[2:]}+ {key}: '
-                             f'{iter_(val2, deep_indent_size, keys)}')
+                             f'{iter_(val2, deep_indent_size, keys)}'.rstrip())
             elif val == 'unchanged':
                 val1 = deep_get_value(data1, keys)
                 lines.append(f'{deep_indent[2:]}  {key}: '
-                             f'{iter_(val1, deep_indent_size, keys)}')
+                             f'{iter_(val1, deep_indent_size, keys)}'.rstrip())
             else:
                 lines.append(f'{deep_indent[2:]}  {key}: '
-                             f'{iter_(val, deep_indent_size, keys)}')
+                             f'{iter_(val, deep_indent_size, keys)}'.rstrip())
             keys.pop()
-            lines = list(map(lambda line: line.rstrip(), lines))
         result = itertools.chain("{", lines, [current_indent + "}"])
         return type_conversion('\n'.join(result))
 
