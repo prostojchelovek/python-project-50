@@ -6,3 +6,4 @@
 * demonstration of function operation with yaml format: [here](https://asciinema.org/a/C3L4t4O6i24KntauH2swqXjAE)
 * recursive comparison demonstration: [here](https://asciinema.org/a/Jue04pmgCBCpnYqMDDkGq3gCr)
 * flat format demonstration: [here](https://asciinema.org/a/fJTFggA7sInPevq5yW1eTnMqc)
+* json format demonstration: [here](https://asciinema.org/a/x7pVkE4olE8ok9LX99ZIge5NY)
