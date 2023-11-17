@@ -10,7 +10,7 @@ def stylish(value, data1, data2):
 
     def iter_(current_value, depth, keys):
         if not isinstance(current_value, dict):
-            return f"{current_value}"
+            return f"{current_value}".rstrip()
 
         deep_indent_size = depth + spaces_count
         deep_indent = replacer * deep_indent_size
