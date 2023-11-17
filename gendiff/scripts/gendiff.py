@@ -20,10 +20,10 @@ def main():
     args = parser.parse_args()
     data1 = args.file1
     data2 = args.file2
-    if args.format == 'stylish':
-        print(stylish(generate_diff(data1, data2), data1, data2))
+    if args.format == 'plain':
+        print(generate_diff(data1, data2, 'plain'))
     else:
-        print(args.format(generate_diff(data1, data2), data1, data2))
+        print(generate_diff(data1, data2))
 
 
 if __name__ == '__main__':
