@@ -7,7 +7,7 @@ from functools import reduce
 def stylish(value, data1, data2):
     replacer = ' '
     spaces_count = 4
-    
+
     def iter_(current_value, depth, keys):
         if not isinstance(current_value, dict):
             return f"{current_value}"
@@ -42,7 +42,7 @@ def stylish(value, data1, data2):
                 lines.append(f'{deep_indent[2:]}  {key}: '
                              f'{iter_(val, deep_indent_size, keys)}')
             keys.pop()
-        lines = list(map(lambda line: line.rstrip(), lines))
+            lines = list(map(lambda line: line.rstrip(), lines))
         result = itertools.chain("{", lines, [current_indent + "}"])
         return type_conversion('\n'.join(result))
 
