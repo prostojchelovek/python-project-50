@@ -12,20 +12,22 @@ def different(data1, data2, status=''):
         return status
 
     keys = sorted(list(data1.keys() | data2.keys()))
+
     for k in keys:
-        if k not in data1:
-            result[k] = different(data1.get(k, -math.inf),
-                                  data2.get(k, math.inf), 'added')
-        elif k not in data2:
-            result[k] = different(data1.get(k, -math.inf),
-                                  data2.get(k, math.inf), 'deleted')
-        elif data1[k] == data2[k]:
-            result[k] = different(data1.get(k, -math.inf),
-                                  data2.get(k, math.inf), 'unchanged')
-        else:
-            result[k] = different(data1.get(k, -math.inf),
-                                  data2.get(k, math.inf), 'changed')
+        result[k] = different_helper(data1, data2, k)
+
     return result
+
+
+def different_helper(data1, data2, key):
+    if key not in data1:
+        return different(data1.get(key, -math.inf), data2.get(key, math.inf), 'added')
+    elif key not in data2:
+        return different(data1.get(key, -math.inf), data2.get(key, math.inf), 'deleted')
+    elif data1[key] == data2[key]:
+        return different(data1.get(key, -math.inf), data2.get(key, math.inf), 'unchanged')
+    else:
+        return different(data1.get(key, -math.inf), data2.get(key, math.inf), 'changed')
 
 
 def generate_diff(file1, file2, format='stylish'):
