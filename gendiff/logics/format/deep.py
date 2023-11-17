@@ -10,7 +10,7 @@ def stylish(value, data1, data2):
 
     def iter_(current_value, depth, keys):
         if not isinstance(current_value, dict):
-            return f"{current_value}".rstrip()
+            return f"{current_value}"
 
         deep_indent_size = depth + spaces_count
         deep_indent = replacer * deep_indent_size
@@ -22,25 +22,25 @@ def stylish(value, data1, data2):
             if val == 'added':
                 val1 = deep_get_value(data2, keys)
                 lines.append(f'{deep_indent[2:]}+ {key}: '
-                             f'{iter_(val1, deep_indent_size, keys)}'.rstrip())
+                             f'{iter_(val1, deep_indent_size, keys)}')
             elif val == 'deleted':
                 val2 = deep_get_value(data1, keys)
                 lines.append(f'{deep_indent[2:]}- {key}: '
-                             f'{iter_(val2, deep_indent_size, keys)}'.rstrip())
+                             f'{iter_(val2, deep_indent_size, keys)}')
             elif val == 'changed':
                 val1 = deep_get_value(data1, keys)
                 lines.append(f'{deep_indent[2:]}- {key}: '
-                             f'{iter_(val1, deep_indent_size, keys)}'.rstrip())
+                             f'{iter_(val1, deep_indent_size, keys)}')
                 val2 = deep_get_value(data2, keys)
                 lines.append(f'{deep_indent[2:]}+ {key}: '
-                             f'{iter_(val2, deep_indent_size, keys)}'.rstrip())
+                             f'{iter_(val2, deep_indent_size, keys)}')
             elif val == 'unchanged':
                 val1 = deep_get_value(data1, keys)
                 lines.append(f'{deep_indent[2:]}  {key}: '
-                             f'{iter_(val1, deep_indent_size, keys)}'.rstrip())
+                             f'{iter_(val1, deep_indent_size, keys)}')
             else:
                 lines.append(f'{deep_indent[2:]}  {key}: '
-                             f'{iter_(val, deep_indent_size, keys)}'.rstrip())
+                             f'{iter_(val, deep_indent_size, keys)}')
             keys.pop()
         result = itertools.chain("{", lines, [current_indent + "}"])
         return type_conversion('\n'.join(result))

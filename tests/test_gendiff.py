@@ -35,7 +35,7 @@ def test_diff_yml():
 def test_diff_deep_json():
     file1 = get_path('deep_file1.json')
     file2 = get_path('deep_file2.json')
-    expected = get_path('expected_deep.txt')
+    expected = get_path('expected_deep')
     result = generate_diff(file1, file2)
     assert result == open(expected).read()
 
@@ -43,7 +43,7 @@ def test_diff_deep_json():
 def test_diff_deep_yaml():
     file1 = get_path('deep_file1.yaml')
     file2 = get_path('deep_file2.yaml')
-    expected = get_path('expected_deep.txt')
+    expected = get_path('expected_deep')
     result = generate_diff(file1, file2)
     assert result == open(expected).read()
 
