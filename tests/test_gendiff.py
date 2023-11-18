@@ -72,7 +72,7 @@ def test_diff_json_format():
     assert result == open(expected).read()
 
 
-def test_diff_deep_json():
+def test_diff_deep2_json():
     file1 = get_path('deep_file3.json')
     file2 = get_path('deep_file4.json')
     expected = get_path('expected_stylish')
@@ -80,9 +80,9 @@ def test_diff_deep_json():
     assert result == open(expected).read()
 
 
-def test_diff_deep_yml():
-    file1 = get_path('deep_file3.json')
-    file2 = get_path('deep_file4.json')
+def test_diff_deep2_yml():
+    file1 = get_path('deep_file3.yml')
+    file2 = get_path('deep_file4.yml')
     expected = get_path('expected_stylish')
     result = generate_diff(file1, file2)
     assert result == open(expected).read()
